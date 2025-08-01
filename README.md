@@ -43,5 +43,6 @@ CORS policy on the backend allows requests from localhost:4200.
 
 2. Clone the repository: 
    ```bash
-   git clone https://github.com/your-username/JobApplicationTracker-Frontend.git
-   cd job-application-tracker
+   git clone https://github.com/your-username/JobApplicationTracker.git
+   npm install
+   npm start
