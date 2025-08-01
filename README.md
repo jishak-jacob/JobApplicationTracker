@@ -1,59 +1,47 @@
 # JobApplicationTracker
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.4.
+Provides a user interface to add, update, and view job applications connected to the ASP.NET Core backend API.
 
-## Development server
+# Features
 
-To start a local development server, run:
+- List all job applications in a paginated table
+- Add new job applications via a form with validation
+- Edit existing applications inline with validation
+- Status dropdown for updating application status
+- Communicates with backend API via Angular HttpClient
+- Basic styling for usability and responsiveness
 
-```bash
-ng serve
-```
+ # Validations
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Required fields: Company Name, Position, Date Applied, and Status must be filled before submitting.
+- Date validation: Users cannot select future dates for the Date Applied field. Validation error is shown if violated.
+- Inline edit validation: When editing a job application, the same validations apply. The save button is disabled or shows validation errors if inputs are invalid.
+- Duplicate entries (same Company Name, Position, and Date Applied) are prevented on add.
 
-## Code scaffolding
+  # Pagination
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+The job applications list supports pagination with pageNumber and pageSize.
+Pagination controls (Previous, Next) allow navigating through pages.
+The frontend sends these parameters to the backend API to fetch paginated data.
+The table displays only the current page of job applications for better performance and usability.
 
-```bash
-ng generate component component-name
-```
+# Assumptions
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+The backend API is running and accessible at the configured API URL.
+CORS policy on the backend allows requests from localhost:4200.
 
-```bash
-ng generate --help
-```
 
-## Building
+# How to Run the Frontend
 
-To build the project run:
+1. Prerequisites:
+   - [Node.js](https://nodejs.org/) (LTS version recommended)  
+   - Angular CLI installed globally:  
+     ```bash
+     npm install -g @angular/cli
+     ```
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+2. Clone the repository: 
+   ```bash
+   git clone https://github.com/your-username/JobApplicationTracker-Frontend.git
+   cd job-application-tracker
