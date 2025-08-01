@@ -1,0 +1,77 @@
+<h2>Job Applications</h2>
+
+<form #appForm="ngForm" (ngSubmit)="addApplication(appForm)">
+  <input type="text" [(ngModel)]="newApplication.companyName" name="company" placeholder="Company Name" required #company="ngModel"/>
+  <div *ngIf="company.invalid && company.touched" style="color:red">Company Name is required</div>
+  <input type="text" [(ngModel)]="newApplication.position" name="position" placeholder="Position" required #position="ngModel"/>
+  <div *ngIf="position.invalid && position.touched" style="color:red">Position is required</div>
+  <input type="date" [(ngModel)]="newApplication.dateApplied" name="dateApplied" required #dateApplied="ngModel"/>
+  <div *ngIf="dateApplied.invalid && dateApplied.touched" style="color:red">Date Applied is required</div>
+   <div *ngIf="dateApplied.touched && isFutureDate(newApplication.dateApplied)" style="color:red"> Date applied cannot be in the future.</div>
+
+ <select [(ngModel)]="newApplication.status" name="status" required #status="ngModel">
+  <option value="" disabled selected>Choose your option</option>
+  <option *ngFor="let option of statusOptions" [value]="option.value"> {{ option.label }}</option>
+</select>
+
+  <div *ngIf="status.invalid && status.touched" style="color:red">Status is required</div>
+
+  <button type="submit">Add</button>
+</form>
+
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Company Name</th>
+      <th>Position</th>
+      <th>Status</th>
+      <th>Date Applied</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let job of jobApplications">
+  <ng-container *ngIf="editId === job.id && editingJobCopy; else viewRow">
+    <td>
+      <input [(ngModel)]="editingJobCopy.companyName" name="company-{{ job.id }}" required #companyEdit="ngModel" />
+      <div *ngIf="(companyEdit.invalid && (companyEdit.touched || showEditValidation))" style="color:red">Company Name is required</div>
+    </td>
+    <td>
+      <input [(ngModel)]="editingJobCopy.position" name="position-{{ job.id }}" required #positionEdit="ngModel" />
+      <div *ngIf="(positionEdit.invalid && (positionEdit.touched || showEditValidation))" style="color:red">Position is required</div>
+    </td>
+    <td>
+      <select [(ngModel)]="editingJobCopy.status" name="status-{{ job.id }}" required #statusEdit="ngModel">
+        <option value="" disabled>Choose your option</option>
+        <option *ngFor="let option of statusOptions" [value]="option.value">{{ option.label }}</option>
+      </select>
+    </td>
+    <td>
+      <input type="date" [(ngModel)]="editingJobCopy.dateApplied" name="date-{{ job.id }}" required #dateEdit="ngModel" />
+      <div *ngIf="dateEdit.touched && isFutureDate(editingJobCopy.dateApplied)" style="color:red"> Date applied cannot be in the future.</div>
+    </td>
+    <td>
+      <button (click)="saveEdit(job, companyEdit, positionEdit, statusEdit, dateEdit)">Save</button>
+      <button style="margin-left: 8px;" (click)="cancelEdit()">Cancel</button>
+    </td>
+  </ng-container>
+
+  <ng-template #viewRow>
+    <td>{{ job.companyName }}</td>
+    <td>{{ job.position }}</td>
+    <td>{{ statusLabels[job.status] }}</td>
+    <td>{{ job.dateApplied | date:'yyyy-MM-dd' }}</td>
+    <td><button (click)="startEdit(job.id)">Edit</button></td>
+  </ng-template>
+</tr>
+
+  </tbody>
+</table>
+
+<div class="pagination-controls" style="margin-top: 1rem;">
+  <button (click)="changePage(pageNumber - 1)" [disabled]="pageNumber === 1">Previous</button>
+  <span> Page {{ pageNumber }} </span>
+  <button (click)="changePage(pageNumber + 1)" [disabled]="jobApplications.length < pageSize">Next</button>
+</div>
